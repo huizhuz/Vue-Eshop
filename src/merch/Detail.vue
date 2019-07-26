@@ -71,8 +71,6 @@
 		},
 		methods: {
 			getImageUrl(imageName) {
-				let a = "../../src/images/" + imageName;
-				console.log(a);
 				return require("../../src/images/" + imageName);
 			}
 		}
