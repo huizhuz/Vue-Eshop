@@ -1,0 +1,41 @@
+
+/* media query */
+@media screen and (max-width: 320px) {
+    html {
+        /* 小于iPhone5的320px尺寸, 字体设置为14px */
+        font-size: calc(100%) !important;
+        font-size: 14px !important;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 414px) {
+    html {
+        /* iPhone5的320px尺寸作为14px基准，414px正好16px大小*/
+        font-size: calc(100% + 2 * (100vw - 320px) / 94) !important;
+        font-size: calc(14px + 2 * (100vw - 320px) / 94) !important;
+    }
+}
+
+@media screen and (min-width: 414px) and (max-width: 768px) {
+    html {
+        /* iPhone6 plus的414px尺寸作为16px基准，768px正好18px大小*/
+        font-size: calc(8/7 + 2 * (100vw - 414px) / 354) !important;
+        font-size: calc(16px + 2 * (100vw - 414px) / 354) !important;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 960px) {
+    html {
+        /* 768px-960px每100像素宽字体增加0.5/(960-768) */
+        font-size: calc(9/7 + 0.5 * (100vw - 768px) / 192) !important; 
+        font-size: calc(18px + 0.5 * (100vw - 768px) / 192) !important;
+    }
+}
+
+@media screen and (min-width: 960px) {
+    html {
+        /* 960px往后是每100像素0.35px增加 */
+        font-size: calc(8/7 + 3.5 * (100vw - 960px) / 1000) !important;
+        font-size: calc(16px + 3.5 * (100vw - 960px) / 1000) !important;
+    }
+}
