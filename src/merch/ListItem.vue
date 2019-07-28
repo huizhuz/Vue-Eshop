@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<div class="item-box" :style="{ backgroundImage: fullImageUrl(merchItem.pics[0])}">
+		<div class="item-box" 
+			:style="{ backgroundImage: 'url(' + require('../../src/images/' + merchItem.pics[0]) + ')'}">
 			<div v-if="merchItem.stock == 0" class="sold-out">Sold out</div>
 			<div v-if="merchItem.stock == 0"></div>
 			<router-link class="item-info router-link-style" :to="getRouterLink(merchItem)">
@@ -27,7 +28,7 @@
 		props: ["merchItem"],
 		methods: {
 			getImageUrl(imageName) {
-				return "../../src/images/" + imageName;
+				return require("../../src/images/" + imageName);
 			},
 			fullImageUrl(imageName) {
                 require("../../src/images/" + imageName)
