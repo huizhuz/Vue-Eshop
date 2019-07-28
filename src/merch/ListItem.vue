@@ -30,8 +30,8 @@
 				return "../../src/images/" + imageName;
 			},
 			fullImageUrl(imageName) {
-                let pictureUrl = require("../../src/images/" + imageName);
-				return "url(" + pictureUrl + ")";
+                require("../../src/images/" + imageName)
+				return "url('../../src/images/" + imageName + "')";
 			},
 			getRouterLink(merchItem) {
 				return (
@@ -45,6 +45,7 @@
 				let link = this.getRouterLink(this.merchItem);
 				this.$router.push(link);
             },
+
 		},
 		computed: {
 			soldOut() {
