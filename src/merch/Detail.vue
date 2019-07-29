@@ -21,7 +21,7 @@
 				<p>${{currentItem.price}}</p>
 				<p>{{currentItem.description}}</p>
 				<div class="sold-out" v-if="soldOut">Sold out</div>
-				<v-button buttonName="Add to cart"></v-button>
+				<v-button v-if="!soldOut" buttonName="Add to cart"></v-button>
 			</div>
 		</div>
 	</div>
@@ -82,6 +82,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
+		padding: 0 10vw 0 10vw;
 	}
 	.item {
 		display: flex;

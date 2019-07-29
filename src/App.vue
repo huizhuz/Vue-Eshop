@@ -26,7 +26,7 @@
 
 <style scoped>
 	.content {
-		width: 80vw;
+		width: 100vw;
 		margin: 0 auto;
 	}
 
@@ -42,4 +42,5 @@
 	.fade-leave-active {
 		opacity: 0;
 	}
+
 </style>

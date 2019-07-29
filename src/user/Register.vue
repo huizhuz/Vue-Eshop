@@ -4,12 +4,16 @@
 			<h3>Sign up</h3>
 		</div>
 		<form>
-            Username <br />
-            <input type="text" name="username" /> <br />
-            Email <br />
-            <input type="email" name="email" /> <br /> 
-            Password <br />
-            <input type="password" name="password" /> <br />
+			Username
+			<br />
+			<input type="text" name="username" />
+			<br />Email
+			<br />
+			<input type="email" name="email" />
+			<br />Password
+			<br />
+			<input type="password" name="password" />
+			<br />
 		</form>
 		<div class="buttons">
 			<v-button buttonName="Sign up"></v-button>
@@ -28,12 +32,7 @@
 		justify-content: flex-start;
 		align-items: center;
 	}
-	.buttons {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-	}
+
 	.router-link-style {
 		text-decoration: none;
 		color: #9c7509;
@@ -42,12 +41,12 @@
 	.router-link-style:hover {
 		color: #b88a0b;
 	}
-	@media screen and (max-width: 415px) {
-		.buttons {
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-start;
-			align-items: flex-start;
-		}
+
+	.buttons {
+		margin-top: 2rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
 	}
 </style>

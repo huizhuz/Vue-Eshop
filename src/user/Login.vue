@@ -32,12 +32,7 @@
 		justify-content: flex-start;
 		align-items: center;
 	}
-	.buttons {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-	}
+
 	.router-link-style {
 		text-decoration: none;
 		color: #9c7509;
@@ -47,13 +42,12 @@
 		color: #b88a0b;
 	}
 
-	@media screen and (max-width: 415px) {
-		.buttons {
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-start;
-			align-items: flex-start;
-		}
+	.buttons {
+		margin-top: 4rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
 	}
 </style>
 

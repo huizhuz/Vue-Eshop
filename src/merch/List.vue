@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="padding: 0 10vw 0 10vw;">
 		<h2 class="category">Shop {{category}}</h2>
         <line-break></line-break>
 		<div class="item-wrapper">
