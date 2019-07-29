@@ -4,15 +4,15 @@
 			<h3>Sign in</h3>
 		</div>
 		<form>
-			User name
+			Email
 			<br />
-			<input type="text" name="username" />
+			<input type="email" name="email" v-model="userInput.email" />
 			<br />Password
 			<br />
-			<input type="password" name="psw" />
+			<input type="password" name="psw" v-model="userInput.password" />
 		</form>
 		<div class="buttons">
-			<v-button buttonName="submit"></v-button>
+			<v-button buttonName="submit" @click.native="onSubmit"></v-button>
 			<p>
 				New customer?
 				<router-link to="/register" class="router-link-style">Register here -></router-link>
@@ -22,7 +22,35 @@
 </template>
 
 <script>
-	export default {};
+	import axios from "axios"
+	export default {
+		data() {
+			return {
+				userInput: {
+					email: "",
+					password: ""
+				}
+			};
+		},
+		methods: {
+			onSubmit() {
+				axios
+					.post(
+						'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCqv2jR-WIHUTiYLcN33DUJb88c07O_zaY',
+						{
+							email: this.userInput.email,
+							password: this.userInput.password,
+							returnSecureToken: true
+						}
+					)
+					.then(res => {
+						console.log(res);
+						this.$router.push("/Vue-Eshop");
+					})
+					.catch(error => console.log(error));
+			}
+		}
+	};
 </script>
 
 <style scoped>

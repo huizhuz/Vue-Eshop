@@ -6,11 +6,10 @@
 			</div>
 			<form>
 				Username
-				<span class="error">{{usernameError}}</span>
 				<br />
 				<input type="text" name="username" v-model="newUser.username" />
 				<br />Email
-				<span class="error">{{emailError}}</span>
+				<span class="error">{{errorMessage}}</span>
 				<br />
 				<input type="email" name="email" v-model="newUser.email" />
 				<br />Password
@@ -36,42 +35,71 @@
 
 <script>
 	import { User } from "../store/store.js";
+	import axios from "axios";
 	export default {
 		data() {
 			return {
 				newUser: { username: "", email: "", password: "" },
 				userList: this.$store.state.userList,
-				usernameError: "",
-				emailError: "",
-				error: false,
+				errorMessage: '',
 				showLoading: false
 			};
 		},
 		methods: {
 			register() {
-				this.usernameError = "";
-				this.emailError = "";
-				this.error = false;
-				for (let i = 0; i < this.userList.length; i++) {
-					if (this.userList[i].username === this.newUser.username) {
-						this.usernameError = "The username already exists.";
-						this.error = true;
-						break;
-					}
-				}
-				for (let j = 0; j < this.userList.length; j++) {
-					if (this.userList[j].email === this.newUser.email) {
-						this.emailError = "The email address already exists.";
-						this.error = true;
-						break;
-					}
-				}
-				if (this.error == false) {
-					this.$store.state.userList.push(new User(this.newUser));
-					this.showLoading = true;
-					setTimeout(()=>{this.$router.push('/login')}, 1500)
-					console.log(this.userList);
-				}
+				this.errorMessage = '';
+				axios
+					.post(
+						"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCqv2jR-WIHUTiYLcN33DUJb88c07O_zaY",
+						{
+							email: this.newUser.email,
+							password: this.newUser.password,
+							returnSecureToken: true
+						}
+					)
+					.then(res => {
+						this.showLoading = true;
+						setTimeout(() => {
+							this.$router.push("/login");
+						}, 1500);
+					})
+					.catch(error => {
+						this.errorMessage = "The email address already exists.";
+					});
+				// Below was the code before linked to firebase
+				// this.usernameError = "";
+				// this.emailError = "";
+				// this.error = false;
+				// axios
+				// 	.get("https://vue-eshop-db.firebaseio.com/users.json")
+				// 	.then(res => {
+				// 		for (let i in res.data) {
+				// 			if (res.data[i].username === this.newUser.username) {
+				// 				this.usernameError = "The username already exists.";
+				// 				this.error = true;
+				// 				break;
+				// 			}
+				// 		}
+				// 		for (let j in res.data) {
+				// 			if (res.data[j].email === this.newUser.email) {
+				// 				this.emailError =
+				// 					"The email address already exists.";
+				// 				this.error = true;
+				// 				break;
+				// 			}
+				// 		}
+				// 		if (this.error == false) {
+				// 			axios
+				// 				.post(
+				// 					"https://vue-eshop-db.firebaseio.com/users.json",
+				// 					this.newUser
+				// 				)
+				// 			this.showLoading = true;
+				// 			setTimeout(() => {
+				// 				this.$router.push("/login");
+				// 			}, 1500);
+				// 		}
+				// 	});
 			}
 		}
 	};
@@ -106,7 +134,7 @@
 		color: maroon;
 	}
 	.loading {
-		width: 320px;
+		width: 350px;
 		height: 100px;
 		background: white;
 		border: 3px solid #333333;
