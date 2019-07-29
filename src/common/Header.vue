@@ -4,7 +4,7 @@
 		<div class="header-wrapper">
 			<div class="logo">
 				<img src="../images/Musec_icon.png" alt="site-logo" />
-				<router-link to="/" class="title router-link-style">Musec</router-link>
+				<router-link to="/Vue-Eshop" class="title router-link-style">Musec</router-link>
 			</div>
 			<div class="nav-wrapper">
 				<router-link to="/list/guitar" class="nav-item router-link-style">Guitar</router-link>
@@ -22,7 +22,7 @@
 		<div class="mini-header-wrapper">
 			<div class="logo">
 				<img src="../images/Musec_icon.png" alt="site-logo" />
-				<router-link to="/" class="title router-link-style">Musec</router-link>
+				<router-link to="/Vue-Eshop" class="title router-link-style">Musec</router-link>
 			</div>
 			<div class="dropdown">
 				<span @click="showMenu">
@@ -31,7 +31,7 @@
 				<transition name="slide">
 					<div v-if="show" class="mini-nav-content">
 						<div class="username">Hi, guest</div>
-						<router-link to="/" class="mini-nav-item router-link-style" @click.native="hideMenu">Home</router-link>
+						<router-link to="/Vue-Eshop" class="mini-nav-item router-link-style" @click.native="hideMenu">Home</router-link>
 						<router-link
 							to="/list/guitar"
 							class="mini-nav-item router-link-style"

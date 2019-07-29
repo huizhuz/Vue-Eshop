@@ -7,10 +7,10 @@ import Welcome from './merch/Welcome.vue'
 
 
 export const routes = [
-    {path: '/', component: Welcome},
+    {path: '/Vue-Eshop', component: Welcome},
     {path: '/login', component: Login},
     {path: '/register', component: Register},
     {path: '/list/:category', component: List},
     {path: '/list/:category/detail/:merchName', component: Detail},
-    {path: '*', component: List}
+    {path: '*', component: Welcome}
 ]
