@@ -22,7 +22,6 @@
 </template>
 
 <script>
-	import axios from "axios"
 	export default {
 		data() {
 			return {
@@ -34,20 +33,7 @@
 		},
 		methods: {
 			onSubmit() {
-				axios
-					.post(
-						'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCqv2jR-WIHUTiYLcN33DUJb88c07O_zaY',
-						{
-							email: this.userInput.email,
-							password: this.userInput.password,
-							returnSecureToken: true
-						}
-					)
-					.then(res => {
-						console.log(res);
-						this.$router.push("/Vue-Eshop");
-					})
-					.catch(error => console.log(error));
+				this.$store.dispatch('login', this.userInput);
 			}
 		}
 	};

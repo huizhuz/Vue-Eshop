@@ -1,7 +1,11 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 
+import Vuex from 'vuex'
 Vue.use(Vuex)
+
+import axios from 'axios'
+
+import { router } from '../main.js'
 
 class Item {
     constructor(pics, name, price, stock, description, brand, category) {
@@ -15,7 +19,7 @@ class Item {
     }
 }
 export class User {
-    constructor(newUser){
+    constructor(newUser) {
         this.username = newUser.username;
         this.email = newUser.email;
         this.password = newUser.password;
@@ -24,9 +28,6 @@ export class User {
 
 export const store = new Vuex.Store({
     state: {
-        userList:[
-
-        ],
         merchList: { // all products
             ukulele: [ // all ukulele
                 new Item(
@@ -84,12 +85,51 @@ export const store = new Vuex.Store({
                     'Martin', 'accessory'
                 ),
                 new Item(
-                    ['pickpack.jpg'],'multi-color pearloid pick pack', 5, 50,
+                    ['pickpack.jpg'], 'multi-color pearloid pick pack', 5, 50,
                     'Martin picks provide high-performance flexibility and are the perfect fit for you and your instrument.',
                     'Martin', 'accessory'
                 )
             ]
+        },
+        errorMessage: '',
+    },
+
+    actions: {
+        login({ commit }, authData) {
+            axios
+                .post(
+                    'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCqv2jR-WIHUTiYLcN33DUJb88c07O_zaY',
+                    {
+                        email: authData.email,
+                        password: authData.password,
+                        returnSecureToken: true
+                    }
+                )
+                .then(res => {
+                    router.push('/Vue-Eshop');
+                })
+                .catch(error => console.log(error));
+        },
+        signup({ commit }, authData) {
+            this.errorMessage = '';
+            axios
+                .post(
+                    'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCqv2jR-WIHUTiYLcN33DUJb88c07O_zaY',
+                    {
+                        email: authData.email,
+                        password: authData.password,
+                        returnSecureToken: true
+                    }
+                )
+                .then(res => {
+                    this.showLoading = true;
+                    setTimeout(() => {
+                        router.push("/login");
+                    }, 1500);
+                })
+                .catch(error => {
+                    this.errorMessage = "The email address already exists.";
+                });
         }
     }
-
 })

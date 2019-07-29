@@ -41,32 +41,18 @@
 			return {
 				newUser: { username: "", email: "", password: "" },
 				userList: this.$store.state.userList,
-				errorMessage: '',
+				errorMessage: this.$store.state.errorMessage,
 				showLoading: false
 			};
 		},
 		methods: {
 			register() {
-				this.errorMessage = '';
-				axios
-					.post(
-						"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCqv2jR-WIHUTiYLcN33DUJb88c07O_zaY",
-						{
-							email: this.newUser.email,
-							password: this.newUser.password,
-							returnSecureToken: true
-						}
-					)
-					.then(res => {
-						this.showLoading = true;
-						setTimeout(() => {
-							this.$router.push("/login");
-						}, 1500);
-					})
-					.catch(error => {
-						this.errorMessage = "The email address already exists.";
-					});
-				// Below was the code before linked to firebase
+				this.$store.dispatch('signup', {
+					email: this.newUser.email,
+					password: this.newUser.password,
+				});
+
+				// Below was the code before the project was linked to firebase
 				// this.usernameError = "";
 				// this.emailError = "";
 				// this.error = false;
