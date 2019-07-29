@@ -14,8 +14,19 @@ class Item {
         this.category = category;
     }
 }
+export class User {
+    constructor(newUser){
+        this.username = newUser.username;
+        this.email = newUser.email;
+        this.password = newUser.password;
+    }
+}
+
 export const store = new Vuex.Store({
     state: {
+        userList:[
+
+        ],
         merchList: { // all products
             ukulele: [ // all ukulele
                 new Item(
