@@ -18,9 +18,9 @@
 					:to="'/user/'+ username"
 					class="user-item router-link-style"
 				>Account</router-link>
-				<p class="user-item router-link-style">
+				<router-link to="/cart" class="user-item router-link-style">
 					<font-awesome-icon icon="shopping-cart" />
-				</p>
+				</router-link>
 			</div>
 		</div>
 
@@ -68,7 +68,7 @@
 							class="mini-nav-item router-link-style"
 							@click.native="hideMenu"
 						>Account</router-link>
-						<p class="mini-nav-item router-link-style" @click.native="hideMenu">Cart</p>
+						<router-link to="/cart" class="mini-nav-item router-link-style" @click.native="hideMenu">Cart</router-link>
 					</div>
 				</transition>
 			</div>

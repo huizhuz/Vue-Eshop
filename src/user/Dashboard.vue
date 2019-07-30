@@ -1,27 +1,26 @@
 <template>
-    <div>
-        <p>{{$route.params.username}}</p>
-        <p>sign out</p>
-    </div>
+	<div>
+		<div v-if="!loggingOut">
+			<p>{{$route.params.username}}</p>
+			<v-button @click.native="onLogout" buttonName="Logout"></v-button>
+		</div>
+	</div>
 </template>
 
-// <script>
-// import axios from 'axios'
-// export default {
-//     data(){
-//         return{
-//             currentUser:{
-//                 username:'',
-//                 email:'',
-//             },
-//             haha: this.$route.params.username,
-//         }
-//     },
-//     create(){
-//         axios.get
-//     },
-//     methods:{
-
-//     }
-// }
+<script>
+	export default {
+		data() {
+			return {};
+		},
+		methods: {
+			onLogout() {
+				this.$store.commit("clearAuthData");
+				this.loggingOut = true;
+				this.$router.push("/Vue-Eshop");
+			}
+		}
+	};
 </script>
+
+<style scoped>
+</style>

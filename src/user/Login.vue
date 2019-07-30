@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="form-wrapper">
+		<div class="form-wrapper" v-if="!loggedin">
 			<div>
 				<h3>Sign in</h3>
 			</div>
@@ -20,6 +20,10 @@
 				</p>
 			</div>
 		</div>
+		<div class="logging-in" v-if="loggedin">
+			<p>Successfully logged in...</p>
+			<font-awesome-icon icon="fan" class="fa-spin" />
+		</div>
 	</div>
 </template>
 
@@ -30,20 +34,15 @@
 				userInput: {
 					email: "",
 					password: ""
-				},
-				// loggedin = this.$store.state.loggedin,
+				}
 			};
 		},
-		// computed:{
-		// 	username(){
-		// 		return this.$store.state.username;
-		// 	}
-		// },
-		// created(){
-		// 	if (this.loggedin == true){
-		// 		this.$router.push('/user/'+ this.username);
-		// 	}
-		// },
+		computed: {
+			loggedin() {
+				return this.$store.state.loggedin;
+			}
+		},
+
 		methods: {
 			onSubmit() {
 				this.$store.dispatch("login", this.userInput);
@@ -75,6 +74,19 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: center;
+	}
+	.logging-in {
+		width: 350px;
+		height: 100px;
+		background: white;
+		border: 3px solid #333333;
+		border-radius: 3px;
+		color: #333333;
+		margin: 0 auto;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 10rem;
 	}
 </style>
 

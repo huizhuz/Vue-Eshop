@@ -21,7 +21,8 @@
 				<p>${{currentItem.price}}</p>
 				<p>{{currentItem.description}}</p>
 				<div class="sold-out" v-if="soldOut">Sold out</div>
-				<v-button v-if="!soldOut" buttonName="Add to cart"></v-button>
+				<input type="number" v-if="!soldOut" v-model="quantity">
+				<v-button v-if="!soldOut" buttonName="Add to cart" @click.native="addToCart"></v-button>
 			</div>
 		</div>
 	</div>
@@ -42,6 +43,7 @@
 				currentDirectory: this.$store.state.merchList[
 					this.$route.params.category
 				],
+				quantity: 1,
 				swiperOption: {
 					pagination: {
 						el: ".swiper-pagination",
@@ -61,6 +63,14 @@
 					}
 				}
 			},
+			itemToCart(){
+				return{
+					pics: this.currentItem.pics[0],
+					name: this.currentItem.name,
+					price: this.currentItem.price,
+					quantity: this.quantity,
+				}
+			},
 			soldOut() {
 				if (this.currentItem.stock == 0) {
 					return true;
@@ -72,6 +82,10 @@
 		methods: {
 			getImageUrl(imageName) {
 				return require("../../src/images/" + imageName);
+			},
+			addToCart(){
+				this.$store.commit("addToCart",this.itemToCart);
+				console.log(this.$store.state.cacheCart);
 			}
 		}
 	};

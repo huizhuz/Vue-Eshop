@@ -26,6 +26,15 @@ export class User {
     }
 }
 
+export class cartItem {
+    constructor(pics, name, price, quantity) {
+        this.pics = pics;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+}
+
 export const store = new Vuex.Store({
     state: {
         merchList: { // all products
@@ -91,29 +100,30 @@ export const store = new Vuex.Store({
                 )
             ]
         },
+        cacheCart: [],
         errorMessage: '',
         showLoading: false,
         username: 'guest',
         loggedin: false,
-        // userMap: {
-        //     userID: '',
-        //     username: 'guest',
-        // }
     },
 
     mutations: {
-        // mapUsername(state, tokenID, username) {
-        //     state.userMap.userID = tokenID;
-        //     state.userMap.username = username;
-        // }
+        addToCart(state, info){
+            state.cacheCart.push(info);
+        },
         showLoading(state) {
             state.showLoading = true;
         },
         writeUsername(state, username) {
             state.username = username;
         },
-        changeLoggedin(state){
+        changeLoggedin(state) {
             state.loggedin = true;
+        },
+        clearAuthData(state) {
+            state.showLoading = false;
+            state.username = 'guest';
+            state.loggedin = false;
         }
     },
 
@@ -134,14 +144,16 @@ export const store = new Vuex.Store({
                         .then(res => {
                             commit('changeLoggedin');
                             const userMap = Object.entries(res.data);
-                            for (let [key, value] of userMap){
-                                if(value.userID === userID){
+                            for (let [key, value] of userMap) {
+                                if (value.userID === userID) {
                                     commit('writeUsername', value.username);
                                 }
                             }
                         })
                         .catch(error => console.log(error));
-                    router.push('/Vue-Eshop');
+                    setTimeout(() => {
+                        router.push("/Vue-Eshop");
+                    }, 1500);
                 })
                 .catch(error => console.log(error));
         },
@@ -157,7 +169,7 @@ export const store = new Vuex.Store({
                     }
                 )
                 .then(res => {
-                    axios.post('https://vue-eshop-db.firebaseio.com/userMap.json', {userID: res.data.localId, username: authData.username})
+                    axios.post('https://vue-eshop-db.firebaseio.com/userMap.json', { userID: res.data.localId, username: authData.username })
                         .then(res => {
                             commit('showLoading');
                             setTimeout(() => {

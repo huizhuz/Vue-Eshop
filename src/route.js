@@ -4,11 +4,13 @@ import Detail from './merch/Detail.vue'
 import Dashboard from './user/Dashboard.vue'
 import Login from './user/Login.vue'
 import Register from './user/Register.vue'
+import Cart from './user/Cart.vue'
 
 
 export const routes = [
     {path: '/Vue-Eshop', component: Welcome},
     {path: '/user/:username', component: Dashboard},
+    {path: '/cart', component: Cart},
     {path: '/login', component: Login},
     {path: '/register', component: Register},
     {path: '/list/:category', component: List},
