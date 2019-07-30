@@ -1,22 +1,24 @@
 <template>
-	<div class="form-wrapper">
-		<div>
-			<h3>Sign in</h3>
-		</div>
-		<form>
-			Email
-			<br />
-			<input type="email" name="email" v-model="userInput.email" />
-			<br />Password
-			<br />
-			<input type="password" name="psw" v-model="userInput.password" />
-		</form>
-		<div class="buttons">
-			<v-button buttonName="submit" @click.native="onSubmit"></v-button>
-			<p>
-				New customer?
-				<router-link to="/register" class="router-link-style">Register here -></router-link>
-			</p>
+	<div>
+		<div class="form-wrapper">
+			<div>
+				<h3>Sign in</h3>
+			</div>
+			<form>
+				Email
+				<br />
+				<input type="email" name="email" v-model="userInput.email" />
+				<br />Password
+				<br />
+				<input type="password" name="psw" v-model="userInput.password" />
+			</form>
+			<div class="buttons">
+				<v-button buttonName="submit" @click.native="onSubmit"></v-button>
+				<p>
+					New customer?
+					<router-link to="/register" class="router-link-style">Register here -></router-link>
+				</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -28,12 +30,23 @@
 				userInput: {
 					email: "",
 					password: ""
-				}
+				},
+				// loggedin = this.$store.state.loggedin,
 			};
 		},
+		// computed:{
+		// 	username(){
+		// 		return this.$store.state.username;
+		// 	}
+		// },
+		// created(){
+		// 	if (this.loggedin == true){
+		// 		this.$router.push('/user/'+ this.username);
+		// 	}
+		// },
 		methods: {
 			onSubmit() {
-				this.$store.dispatch('login', this.userInput);
+				this.$store.dispatch("login", this.userInput);
 			}
 		}
 	};

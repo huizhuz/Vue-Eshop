@@ -1,7 +1,7 @@
 <template>
     <div>
-        <!-- <p>{{currentUser.username}}</p>
-        <p>{{currentUser.email}}</p> -->
+        <p>{{$route.params.username}}</p>
+        <p>sign out</p>
     </div>
 </template>
 

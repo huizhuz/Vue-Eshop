@@ -40,52 +40,17 @@
 		data() {
 			return {
 				newUser: { username: "", email: "", password: "" },
-				userList: this.$store.state.userList,
 				errorMessage: this.$store.state.errorMessage,
-				showLoading: false
 			};
+		},
+		computed:{
+			showLoading(){
+				return this.$store.state.showLoading;
+			}
 		},
 		methods: {
 			register() {
-				this.$store.dispatch('signup', {
-					email: this.newUser.email,
-					password: this.newUser.password,
-				});
-
-				// Below was the code before the project was linked to firebase
-				// this.usernameError = "";
-				// this.emailError = "";
-				// this.error = false;
-				// axios
-				// 	.get("https://vue-eshop-db.firebaseio.com/users.json")
-				// 	.then(res => {
-				// 		for (let i in res.data) {
-				// 			if (res.data[i].username === this.newUser.username) {
-				// 				this.usernameError = "The username already exists.";
-				// 				this.error = true;
-				// 				break;
-				// 			}
-				// 		}
-				// 		for (let j in res.data) {
-				// 			if (res.data[j].email === this.newUser.email) {
-				// 				this.emailError =
-				// 					"The email address already exists.";
-				// 				this.error = true;
-				// 				break;
-				// 			}
-				// 		}
-				// 		if (this.error == false) {
-				// 			axios
-				// 				.post(
-				// 					"https://vue-eshop-db.firebaseio.com/users.json",
-				// 					this.newUser
-				// 				)
-				// 			this.showLoading = true;
-				// 			setTimeout(() => {
-				// 				this.$router.push("/login");
-				// 			}, 1500);
-				// 		}
-				// 	});
+				this.$store.dispatch('signup', this.newUser);
 			}
 		}
 	};

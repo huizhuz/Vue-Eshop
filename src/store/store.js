@@ -92,10 +92,33 @@ export const store = new Vuex.Store({
             ]
         },
         errorMessage: '',
+        showLoading: false,
+        username: 'guest',
+        loggedin: false,
+        // userMap: {
+        //     userID: '',
+        //     username: 'guest',
+        // }
+    },
+
+    mutations: {
+        // mapUsername(state, tokenID, username) {
+        //     state.userMap.userID = tokenID;
+        //     state.userMap.username = username;
+        // }
+        showLoading(state) {
+            state.showLoading = true;
+        },
+        writeUsername(state, username) {
+            state.username = username;
+        },
+        changeLoggedin(state){
+            state.loggedin = true;
+        }
     },
 
     actions: {
-        login({ commit }, authData) {
+        login({ commit, state }, authData) {
             axios
                 .post(
                     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCqv2jR-WIHUTiYLcN33DUJb88c07O_zaY',
@@ -106,11 +129,23 @@ export const store = new Vuex.Store({
                     }
                 )
                 .then(res => {
+                    const userID = res.data.localId;
+                    axios.get('https://vue-eshop-db.firebaseio.com/userMap.json')
+                        .then(res => {
+                            commit('changeLoggedin');
+                            const userMap = Object.entries(res.data);
+                            for (let [key, value] of userMap){
+                                if(value.userID === userID){
+                                    commit('writeUsername', value.username);
+                                }
+                            }
+                        })
+                        .catch(error => console.log(error));
                     router.push('/Vue-Eshop');
                 })
                 .catch(error => console.log(error));
         },
-        signup({ commit }, authData) {
+        signup({ commit, state }, authData) {
             this.errorMessage = '';
             axios
                 .post(
@@ -122,10 +157,14 @@ export const store = new Vuex.Store({
                     }
                 )
                 .then(res => {
-                    this.showLoading = true;
-                    setTimeout(() => {
-                        router.push("/login");
-                    }, 1500);
+                    axios.post('https://vue-eshop-db.firebaseio.com/userMap.json', {userID: res.data.localId, username: authData.username})
+                        .then(res => {
+                            commit('showLoading');
+                            setTimeout(() => {
+                                router.push("/login");
+                            }, 1500);
+                        })
+                        .catch(error => console.log(error))
                 })
                 .catch(error => {
                     this.errorMessage = "The email address already exists.";

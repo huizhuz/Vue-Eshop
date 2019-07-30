@@ -12,7 +12,12 @@
 				<router-link to="/list/accessory" class="nav-item router-link-style">Accessory</router-link>
 			</div>
 			<div class="user-wrapper">
-				<router-link to="/login" class="user-item router-link-style">Sign in</router-link>
+				<router-link v-if="!loggedin" to="/login" class="user-item router-link-style">Sign in</router-link>
+				<router-link
+					v-if="loggedin"
+					:to="'/user/'+ username"
+					class="user-item router-link-style"
+				>Account</router-link>
 				<p class="user-item router-link-style">
 					<font-awesome-icon icon="shopping-cart" />
 				</p>
@@ -30,8 +35,12 @@
 				</span>
 				<transition name="slide">
 					<div v-if="show" class="mini-nav-content">
-						<div class="username">Hi, guest</div>
-						<router-link to="/Vue-Eshop" class="mini-nav-item router-link-style" @click.native="hideMenu">Home</router-link>
+						<div class="username">Hi, {{username}}</div>
+						<router-link
+							to="/Vue-Eshop"
+							class="mini-nav-item router-link-style"
+							@click.native="hideMenu"
+						>Home</router-link>
 						<router-link
 							to="/list/guitar"
 							class="mini-nav-item router-link-style"
@@ -48,10 +57,17 @@
 							@click.native="hideMenu"
 						>Accessory</router-link>
 						<router-link
+							v-if="!loggedin"
 							to="/login"
 							class="mini-nav-item router-link-style"
 							@click.native="hideMenu"
 						>Sign in</router-link>
+						<router-link
+							v-if="loggedin"
+							to="/login"
+							class="mini-nav-item router-link-style"
+							@click.native="hideMenu"
+						>Account</router-link>
 						<p class="mini-nav-item router-link-style" @click.native="hideMenu">Cart</p>
 					</div>
 				</transition>
@@ -66,6 +82,14 @@
 			return {
 				show: false
 			};
+		},
+		computed: {
+			username() {
+				return this.$store.state.username;
+			},
+			loggedin() {
+				return this.$store.state.loggedin;
+			}
 		},
 		methods: {
 			showMenu() {
