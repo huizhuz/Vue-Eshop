@@ -64,7 +64,7 @@
 						>Sign in</router-link>
 						<router-link
 							v-if="loggedin"
-							to="/login"
+							:to="'/user/'+ username"
 							class="mini-nav-item router-link-style"
 							@click.native="hideMenu"
 						>Account</router-link>
