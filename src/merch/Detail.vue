@@ -21,8 +21,13 @@
 				<p>${{currentItem.price}}</p>
 				<p>{{currentItem.description}}</p>
 				<div class="sold-out" v-if="soldOut">Sold out</div>
-				<input type="number" v-if="!soldOut" v-model="quantity" />
-				<v-button v-if="!soldOut" buttonName="Add to cart" @click.native="addToCart"></v-button>
+				<input type="number" min="1" max="5" v-if="!soldOut" v-model="quantity" />
+				<div class="prompt">
+					<v-button v-if="!soldOut" buttonName="Add to cart" @click.native="addToCart"></v-button>
+					<transition name="fade">
+						<div v-show="message" style="padding: 0 0 0 2rem;">{{message}}</div>
+					</transition>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -64,7 +69,10 @@
 				}
 			},
 			cacheCart() {
-				return this.$store.state.cacheCart;
+				return this.$store.state.user.cacheCart;
+			},
+			isLoggedIn() {
+				return this.$store.state.loggedin;
 			},
 			itemToCart() {
 				return {
@@ -72,7 +80,7 @@
 					name: this.currentItem.name,
 					price: this.currentItem.price,
 					stock: this.currentItem.stock,
-					quantity: this.quantity
+					quantity: parseInt(this.quantity)
 				};
 			},
 			soldOut() {
@@ -81,6 +89,9 @@
 				} else {
 					return false;
 				}
+			},
+			message() {
+				return this.$store.state.message;
 			}
 		},
 		methods: {
@@ -89,14 +100,51 @@
 			},
 			addToCart() {
 				let exist = false;
-				for (let i = 0; i<this.cacheCart.length; i++) {
-					if (this.cacheCart[i].name == this.currentItem.name){
+				this.$store.commit("changeMessage", "");
+				for (let i = 0; i < this.cacheCart.length; i++) {
+					if (this.cacheCart[i].name == this.currentItem.name) {
 						exist = true;
-						this.cacheCart[i].quantity += this.quantity;
+						let newQuantity =
+							this.cacheCart[i].quantity + parseInt(this.quantity);
+						if (
+							newQuantity <= 5 &&
+							this.cacheCart[i].stock - newQuantity >= 0
+						) {
+							this.cacheCart[i].quantity = newQuantity;
+							if (this.isLoggedIn == true) {
+								this.$store.dispatch("addToUserCart");
+							}
+							setTimeout(() => {
+								this.$store.commit("changeMessage", "");
+							}, 1000);
+						} else if (
+							newQuantity <= 5 &&
+							this.cacheCart[i].stock - newQuantity < 0
+						) {
+							this.$store.commit(
+								"changeMessage",
+								"Not enough stock!"
+							);
+							setTimeout(() => {
+								this.$store.commit("changeMessage", "");
+							}, 1000);
+						} else {
+							this.$store.commit("changeMessage", "5-item limit");
+							setTimeout(() => {
+								this.$store.commit("changeMessage", "");
+							}, 1000);
+						}
 					}
 				}
 				if (exist == false) {
 					this.$store.commit("addToCart", this.itemToCart);
+					// 如果isLoggedIn this.$store.commit("addToUserCart",this.itemToCart);
+					if (this.isLoggedIn == true) {
+						this.$store.dispatch("addToUserCart");
+					}
+					setTimeout(() => {
+						this.$store.commit("changeMessage", "");
+					}, 1000);
 				}
 			}
 		}
@@ -147,7 +195,18 @@
 		width: 5rem;
 		display: absolute;
 	}
-
+	.prompt {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	.fade-enter {
+		opacity: 0;
+	}
+	.fade-enter-to {
+		transition: opacity 1s;
+	}
 	@media screen and (max-width: 850px) {
 		.item {
 			flex-direction: column;

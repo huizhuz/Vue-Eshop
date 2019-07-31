@@ -38,7 +38,7 @@ export const store = new Vuex.Store({
                     'Martin', 'ukulele'
                 ),
                 new Item(
-                    ['c1k-uke.jpg', 'c1k-uke-h.jpg', 'c1k-uke-b.jpg'], 'C1K Uke', 649, 10,
+                    ['c1k-uke.jpg', 'c1k-uke-h.jpg', 'c1k-uke-b.jpg'], 'C1K Uke', 649, 4,
                     'Martin has built the world’s finest ukuleles since 1916, and tenor ukes since 1929 that have long been prized for their full-bodied voice and great volume. The C1K concert-sized model features top, back and sides crafted of solid Hawaiian koa, a wood native to Hawaii and a favorite of island players. Entire body is finished in high quality satin lacquer, and features an applied dovetail neck joint. The C1K Uke is a beautiful example of why Martin is still the name in superior quality ukuleles.',
                     'Martin', 'ukulele'
                 ),
@@ -93,38 +93,55 @@ export const store = new Vuex.Store({
                 )
             ]
         },
-        cacheCart: [],
+
+        user: {
+            userID: '',
+            username: 'guest',
+            cacheCart: [],
+            userHistory: [],
+        },
         errorMessage: '',
         showLoading: false,
-        username: 'guest',
+
         loggedin: false,
+
+        message: '',
     },
 
     mutations: {
-        addToCart(state, info){
-            state.cacheCart.push(info);
+        addToCart(state, info) {
+            state.user.cacheCart.push(info);
         },
-        removeFromCart(state,index){
-            state.cacheCart.splice(index,1);
+        removeFromCart(state, index) {
+            state.user.cacheCart.splice(index, 1);
         },
         showLoading(state) {
             state.showLoading = true;
         },
         writeUsername(state, username) {
-            state.username = username;
+            state.user.username = username;
+        },
+        logUserID(state, userID) {
+            state.user.userID = userID;
+        },
+        writeCart(state, cart){
+            state.user.cacheCart = cart;
         },
         changeLoggedin(state) {
             state.loggedin = true;
         },
         clearAuthData(state) {
             state.showLoading = false;
-            state.username = 'guest';
+            state.user.username = 'guest';
             state.loggedin = false;
+        },
+        changeMessage(state, msg){
+            state.message = msg;
         }
     },
 
     actions: {
-        login({ commit, state }, authData) {
+        login({ commit }, authData) {
             axios
                 .post(
                     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCqv2jR-WIHUTiYLcN33DUJb88c07O_zaY',
@@ -136,13 +153,15 @@ export const store = new Vuex.Store({
                 )
                 .then(res => {
                     const userID = res.data.localId;
-                    axios.get('https://vue-eshop-db.firebaseio.com/userMap.json')
+                    axios.get('https://vue-eshop-db.firebaseio.com/user.json')
                         .then(res => {
                             commit('changeLoggedin');
-                            const userMap = Object.entries(res.data);
-                            for (let [key, value] of userMap) {
+                            commit('logUserID', userID);
+                            const user = Object.entries(res.data);
+                            for (let [key, value] of user) {
                                 if (value.userID === userID) {
                                     commit('writeUsername', value.username);
+                                    commit('writeCart', Object.values(value.userCart));
                                 }
                             }
                         })
@@ -153,7 +172,7 @@ export const store = new Vuex.Store({
                 })
                 .catch(error => console.log(error));
         },
-        signup({ commit, state }, authData) {
+        signup({ commit }, authData) {
             this.errorMessage = '';
             axios
                 .post(
@@ -165,18 +184,45 @@ export const store = new Vuex.Store({
                     }
                 )
                 .then(res => {
-                    axios.post('https://vue-eshop-db.firebaseio.com/userMap.json', { userID: res.data.localId, username: authData.username })
+                    const currentUserID = res.data.localId;
+                    axios.post('https://vue-eshop-db.firebaseio.com/user.json', { userID: currentUserID, username: authData.username, userCart: null, userHistory: null })
                         .then(res => {
                             commit('showLoading');
                             setTimeout(() => {
                                 router.push("/login");
                             }, 1500);
-                        })
+                        }
+                        )
                         .catch(error => console.log(error))
                 })
                 .catch(error => {
                     this.errorMessage = "The email address already exists.";
                 });
+        },
+        addToUserCart({ commit, state }) {
+            axios.get('https://vue-eshop-db.firebaseio.com/user.json')
+            .then(res => {
+                const user = Object.entries(res.data);
+                for (let [key, value] of user) {
+                    if (value.userID === state.user.userID) {
+                        axios.patch('https://vue-eshop-db.firebaseio.com/user/'+key+'.json',{"userCart": state.user.cacheCart})
+                        .then(res => {
+                            commit('changeMessage', "Added to cart!")
+                        })
+                    }
+                }
+            })
+        },
+        removeFromUserCart({state}){
+            axios.get('https://vue-eshop-db.firebaseio.com/user.json')
+            .then(res => {
+                const user = Object.entries(res.data);
+                for (let [key, value] of user) {
+                    if (value.userID === state.user.userID) {
+                        axios.patch('https://vue-eshop-db.firebaseio.com/user/'+key+'.json',{"userCart": state.user.cacheCart})
+                    }
+                }
+            })
         }
     }
 })

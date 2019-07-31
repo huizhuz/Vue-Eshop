@@ -41,7 +41,7 @@
 		},
 		computed: {
 			cacheCart() {
-				return this.$store.state.cacheCart;
+				return this.$store.state.user.cacheCart;
 			},
 			subTotal() {
 				let subtotal = 0;

@@ -85,7 +85,7 @@
 		},
 		computed: {
 			username() {
-				return this.$store.state.username;
+				return this.$store.state.user.username;
 			},
 			loggedin() {
 				return this.$store.state.loggedin;

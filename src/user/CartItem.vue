@@ -7,8 +7,12 @@
 			</div>
 			<div class="cart-info">
 				<p class="cart-info-item">${{cartItem.price}}</p>
-				<p class="cart-info-item">{{cartItem.quantity}}</p>
-                <p class="cart-info-item" @click="remove"><font-awesome-icon icon="times" /></p>
+				<select v-model="cartItem.quantity">
+					<option v-for="number in Math.min(5, cartItem.stock)">{{number}}</option>
+				</select>
+				<p class="cart-info-item" @click="remove">
+					<font-awesome-icon icon="times" />
+				</p>
 			</div>
 		</div>
 		<div class="out-of-stock" v-if="!cartItem.stock">
@@ -21,27 +25,49 @@
 
 <script>
 	export default {
-        props: ["cartItem"],
-        computed: {
+		props: ["cartItem"],
+		computed: {
 			cacheCart() {
-				return this.$store.state.cacheCart;
+				return this.$store.state.user.cacheCart;
 			},
-        },
+			isLoggedIn() {
+				return this.$store.state.loggedin;
+			},
+			quantity() {
+				return this.cartItem.quantity;
+			}
+		},
 		methods: {
 			getImageUrl(imageName) {
 				return require("../../src/images/" + imageName);
 				console.log(require("../../src/images/" + imageName));
-            },
-            remove(){
-                let index=0;
-                for(let i=0; i<this.cacheCart.length; i++){
-                    if(this.cacheCart[i].name == this.cartItem.name) {
-                        console.log()
-                        index = i;
-                        this.$store.commit('removeFromCart',index)
-                    }
-                };
-            }
+			},
+			remove() {
+				let index = 0;
+				for (let i = 0; i < this.cacheCart.length; i++) {
+					if (this.cacheCart[i].name == this.cartItem.name) {
+						index = i;
+						this.$store.commit("removeFromCart", index);
+						if (this.isLoggedIn == true) {
+							this.$store.dispatch("removeFromUserCart");
+						}
+					}
+				}
+			}
+		},
+		watch: {
+			quantity: function() {
+				console.log(this.quantity);
+				let index = 0;
+				for (let i = 0; i < this.cacheCart.length; i++) {
+					if (
+						this.cacheCart[i].name == this.cartItem.name &&
+						this.isLoggedIn == true
+					) {
+						this.$store.dispatch("removeFromUserCart");
+					}
+				}
+			}
 		}
 	};
 </script>
@@ -55,17 +81,17 @@
 	}
 	img {
 		height: 7rem;
-        width: 7rem;
-        object-fit: contain;
+		width: 7rem;
+		object-fit: contain;
 	}
-    .out-of-stock{
-        height: 10rem;
-        background-color: rgba(240, 237, 234, 0.459);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+	.out-of-stock {
+		height: 10rem;
+		background-color: rgba(240, 237, 234, 0.459);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 	.item-info {
 		display: flex;
 		justify-content: flex-start;
@@ -76,19 +102,19 @@
 		justify-content: flex-end;
 		align-items: center;
 	}
-    .cart-info-item{
-        padding: 1rem;
-        margin: 0
-    }
-    @media screen and (max-width: 850px){
-        .item-info{
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-        }
-        .item-info p{
-            order: -1;
-        }
-    }
+	.cart-info-item {
+		padding: 1rem;
+		margin: 0;
+	}
+	@media screen and (max-width: 850px) {
+		.item-info {
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: flex-start;
+		}
+		.item-info p {
+			order: -1;
+		}
+	}
 </style>
 
