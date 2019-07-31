@@ -26,14 +26,7 @@ export class User {
     }
 }
 
-export class cartItem {
-    constructor(pics, name, price, quantity) {
-        this.pics = pics;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-    }
-}
+
 
 export const store = new Vuex.Store({
     state: {
@@ -110,6 +103,9 @@ export const store = new Vuex.Store({
     mutations: {
         addToCart(state, info){
             state.cacheCart.push(info);
+        },
+        removeFromCart(state,index){
+            state.cacheCart.splice(index,1);
         },
         showLoading(state) {
             state.showLoading = true;

@@ -21,7 +21,7 @@
 				<p>${{currentItem.price}}</p>
 				<p>{{currentItem.description}}</p>
 				<div class="sold-out" v-if="soldOut">Sold out</div>
-				<input type="number" v-if="!soldOut" v-model="quantity">
+				<input type="number" v-if="!soldOut" v-model="quantity" />
 				<v-button v-if="!soldOut" buttonName="Add to cart" @click.native="addToCart"></v-button>
 			</div>
 		</div>
@@ -63,13 +63,17 @@
 					}
 				}
 			},
-			itemToCart(){
-				return{
-					pics: this.currentItem.pics[0],
+			cacheCart() {
+				return this.$store.state.cacheCart;
+			},
+			itemToCart() {
+				return {
+					picture: this.currentItem.pics[0],
 					name: this.currentItem.name,
 					price: this.currentItem.price,
-					quantity: this.quantity,
-				}
+					stock: this.currentItem.stock,
+					quantity: this.quantity
+				};
 			},
 			soldOut() {
 				if (this.currentItem.stock == 0) {
@@ -83,9 +87,17 @@
 			getImageUrl(imageName) {
 				return require("../../src/images/" + imageName);
 			},
-			addToCart(){
-				this.$store.commit("addToCart",this.itemToCart);
-				console.log(this.$store.state.cacheCart);
+			addToCart() {
+				let exist = false;
+				for (let i = 0; i<this.cacheCart.length; i++) {
+					if (this.cacheCart[i].name == this.currentItem.name){
+						exist = true;
+						this.cacheCart[i].quantity += this.quantity;
+					}
+				}
+				if (exist == false) {
+					this.$store.commit("addToCart", this.itemToCart);
+				}
 			}
 		}
 	};

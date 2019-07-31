@@ -27,9 +27,9 @@ Vue.use(VueAwesomeSwiper)
 
 // font-awesome icons
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSearch, faShoppingCart, faBars, faFan } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faShoppingCart, faBars, faFan, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faSearch, faShoppingCart, faBars, faFan)
+library.add(faSearch, faShoppingCart, faBars, faFan, faTimes)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 

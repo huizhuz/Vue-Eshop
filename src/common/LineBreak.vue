@@ -7,7 +7,7 @@
 <style scoped>
 	.line-break-wrapper {
 		width: 50vw;
-		padding: 2rem;
+		padding: 1.5rem;
 		margin: 0 auto;
 	}
 	.line-break {
