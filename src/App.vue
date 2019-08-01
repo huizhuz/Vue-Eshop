@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<site-header></site-header>
+		<site-header class="header"></site-header>
 		<transition
 			name="fade"
 			mode="out-in"
@@ -28,6 +28,9 @@
 	.content {
 		width: 100vw;
 		margin: 0 auto;
+	}
+	.header{
+		z-index:5;
 	}
 
 	.fade-enter-active,

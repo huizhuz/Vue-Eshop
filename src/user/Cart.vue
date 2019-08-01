@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<div class="right-wrapper">
-            <h3>Order summary</h3>
+            <h3 class="toggle">Order summary</h3>
 			<div class="total">
 				<div class="line">
 					<p>Subtotal:</p>
@@ -65,7 +65,7 @@
                 this.$router.push('/Vue-Eshop');
             },
             checkout(){
-                console.log("checkout clicked")
+                console.log("checkout clicked");
                 // account money
                 // push to order history
                 // reduce stock
@@ -96,6 +96,7 @@
 	.total {
 		display: flex;
 		flex-direction: column;
+        padding: 0 3rem 0 0;
         width: 80%;
 	}
 	p {
@@ -106,26 +107,38 @@
 		display: none;
 	}
 
+    .toggle {
+        display: none;
+    }
+
 	@media screen and (min-width: 420px) {
+        .wrapper{
+            display: flex;
+            flex-direction: row;
+        }
 		.left-wrapper {
 			width: 70%;
+            border-right: 1px solid rgba(128, 128, 128, 0.575);
 		}
 		.right-wrapper {
+            margin-top: 5rem;
 			width: 30%;
 			height: 100vh;
-			padding: 15rem 2rem;
-			border-left: 1px solid rgba(128, 128, 128, 0.575);
+			padding: 10rem 1rem;
 			flex-direction: column;
 			justify-content: flex-start;
 			align-items: flex-start;
 			position: fixed;
 			right: 0;
-			top: 0rem;
-			z-index: -1;
+			top: 0;
 		}
 		.break {
 			display: block;
 			height: 2rem;
 		}
+        .total{
+            padding: 0;
+            width: 90%;
+        }
 	}
 </style>

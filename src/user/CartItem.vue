@@ -57,7 +57,6 @@
 		},
 		watch: {
 			quantity: function() {
-				console.log(this.quantity);
 				let index = 0;
 				for (let i = 0; i < this.cacheCart.length; i++) {
 					if (

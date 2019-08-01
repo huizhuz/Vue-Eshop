@@ -111,6 +111,7 @@
 							this.cacheCart[i].stock - newQuantity >= 0
 						) {
 							this.cacheCart[i].quantity = newQuantity;
+							this.$store.commit("changeMessage", "Added to cart!");
 							if (this.isLoggedIn == true) {
 								this.$store.dispatch("addToUserCart");
 							}
@@ -138,6 +139,7 @@
 				}
 				if (exist == false) {
 					this.$store.commit("addToCart", this.itemToCart);
+					this.$store.commit("changeMessage", "Added to cart!");
 					// 如果isLoggedIn this.$store.commit("addToUserCart",this.itemToCart);
 					if (this.isLoggedIn == true) {
 						this.$store.dispatch("addToUserCart");

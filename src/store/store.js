@@ -207,7 +207,9 @@ export const store = new Vuex.Store({
                     if (value.userID === state.user.userID) {
                         axios.patch('https://vue-eshop-db.firebaseio.com/user/'+key+'.json',{"userCart": state.user.cacheCart})
                         .then(res => {
-                            commit('changeMessage', "Added to cart!")
+                            setTimeout(() => {
+								this.$store.commit('changeMessage', "");
+							}, 1000);
                         })
                     }
                 }
