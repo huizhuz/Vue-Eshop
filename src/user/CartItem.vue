@@ -49,7 +49,7 @@
 						index = i;
 						this.$store.commit("removeFromCart", index);
 						if (this.isLoggedIn == true) {
-							this.$store.dispatch("removeFromUserCart");
+							this.$store.dispatch("updateUserCart");
 						}
 					}
 				}
@@ -63,7 +63,7 @@
 						this.cacheCart[i].name == this.cartItem.name &&
 						this.isLoggedIn == true
 					) {
-						this.$store.dispatch("removeFromUserCart");
+						this.$store.dispatch("updateUserCart");
 					}
 				}
 			}

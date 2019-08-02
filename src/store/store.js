@@ -96,6 +96,7 @@ export const store = new Vuex.Store({
 
         user: {
             userID: '',
+            userBalance: 0,
             username: 'guest',
             cacheCart: [],
             userHistory: [],
@@ -121,11 +122,17 @@ export const store = new Vuex.Store({
         writeUsername(state, username) {
             state.user.username = username;
         },
+        copyBalance(state, balance) {
+            state.user.userBalance = balance;
+        },
         logUserID(state, userID) {
             state.user.userID = userID;
         },
-        writeCart(state, cart){
+        writeCart(state, cart) {
             state.user.cacheCart = cart;
+        },
+        writeHistory(state, order) {
+            state.user.userHistory.push(order);
         },
         changeLoggedin(state) {
             state.loggedin = true;
@@ -135,13 +142,17 @@ export const store = new Vuex.Store({
             state.user.username = 'guest';
             state.loggedin = false;
         },
-        changeMessage(state, msg){
+        clearUserData(state) {
+            state.user.userCache=[];
+            state.user.userHistory=[];
+        },
+        changeMessage(state, msg) {
             state.message = msg;
         }
     },
 
     actions: {
-        login({ commit }, authData) {
+        login({ state, commit }, authData) {
             axios
                 .post(
                     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCqv2jR-WIHUTiYLcN33DUJb88c07O_zaY',
@@ -161,7 +172,26 @@ export const store = new Vuex.Store({
                             for (let [key, value] of user) {
                                 if (value.userID === userID) {
                                     commit('writeUsername', value.username);
-                                    commit('writeCart', Object.values(value.userCart));
+                                    commit('copyBalance', value.userBalance);
+                                    if (value.userCart != null) {
+                                        commit('writeCart', Object.values(value.userCart));
+                                    }
+                                    if (value.userHistory != null) {
+                                        console.log("after logged in:")
+                                        console.log("value.userHistory");
+                                        console.log(value.userHistory);
+                                        console.log("Object.values(value.userHistory)");
+                                        console.log(Object.values(value.userHistory))
+
+                                        console.log("local history");
+                                        console.log(state.user.userHistory);
+                                        for(let j=0; j<value.userHistory.length; j++) {
+                                            commit('writeHistory', value.userHistory[j]);
+                                        }
+                                        // commit('writeHistoryFromServer', value.userHistory);
+                                        console.log("after commit");
+                                        console.log(state.user.userHistory);
+                                    }
                                 }
                             }
                         })
@@ -201,30 +231,66 @@ export const store = new Vuex.Store({
         },
         addToUserCart({ commit, state }) {
             axios.get('https://vue-eshop-db.firebaseio.com/user.json')
-            .then(res => {
-                const user = Object.entries(res.data);
-                for (let [key, value] of user) {
-                    if (value.userID === state.user.userID) {
-                        axios.patch('https://vue-eshop-db.firebaseio.com/user/'+key+'.json',{"userCart": state.user.cacheCart})
-                        .then(res => {
-                            setTimeout(() => {
-								this.$store.commit('changeMessage', "");
-							}, 1000);
-                        })
+                .then(res => {
+                    const user = Object.entries(res.data);
+                    for (let [key, value] of user) {
+                        if (value.userID === state.user.userID) {
+                            axios.patch('https://vue-eshop-db.firebaseio.com/user/' + key + '.json', { "userCart": state.user.cacheCart })
+                                .then(res => {
+                                    setTimeout(() => {
+                                        commit('changeMessage', "");
+                                    }, 1000);
+                                })
+                        }
                     }
-                }
-            })
+                })
         },
-        removeFromUserCart({state}){
+        updateUserCart({ state }) {
             axios.get('https://vue-eshop-db.firebaseio.com/user.json')
-            .then(res => {
-                const user = Object.entries(res.data);
-                for (let [key, value] of user) {
-                    if (value.userID === state.user.userID) {
-                        axios.patch('https://vue-eshop-db.firebaseio.com/user/'+key+'.json',{"userCart": state.user.cacheCart})
+                .then(res => {
+                    const user = Object.entries(res.data);
+                    for (let [key, value] of user) {
+                        if (value.userID === state.user.userID) {
+                            axios.patch('https://vue-eshop-db.firebaseio.com/user/' + key + '.json', { "userCart": state.user.cacheCart })
+                        }
                     }
-                }
-            })
+                })
+        },
+        updateUserHistory({ state }) {
+            axios.get('https://vue-eshop-db.firebaseio.com/user.json')
+                .then(res => {
+                    const user = Object.entries(res.data);
+                    for (let [key, value] of user) {
+                        if (value.userID === state.user.userID) {
+                            axios.patch('https://vue-eshop-db.firebaseio.com/user/' + key + '.json', { "userHistory": state.user.userHistory })
+                        }
+                    }
+                    /////测试用的
+                    axios.get('https://vue-eshop-db.firebaseio.com/user.json')
+                    .then(
+                        res => {
+                            const user = Object.entries(res.data);
+                            for (let [key, value] of user) {
+                                if (value.userID === state.user.userID) {
+                                    console.log("after dispatch")
+                                    console.log(value.userHistory);
+                                }
+                            }
+                        }
+                    )
+                    //// 测试用的
+                })
+        },
+        updateBalance({ state }) {
+            axios.get('https://vue-eshop-db.firebaseio.com/user.json')
+                .then(res => {
+                    const user = Object.entries(res.data);
+                    for (let [key, value] of user) {
+                        if (value.userID === state.user.userID) {
+                            axios.patch('https://vue-eshop-db.firebaseio.com/user/' + key + '.json', { "userBalance": state.user.userBalance })
+                        }
+                    }
+                })
         }
     }
 })
