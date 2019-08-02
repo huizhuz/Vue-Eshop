@@ -1,24 +1,26 @@
 <template>
-	<!-- <div>
-        <p>{{user.userHistory}}</p>
-		<p v-for="i in user.userHistory.length">{{user.userHistory[i].orderDate}} -- {{user.userHistory[i].orderNumber}}</p>
-	</div> -->
-    <div>
-        <v-button buttonName="click" @click.native="logUserHistory"></v-button>
+    <div class="wrapper">
+        <h2>Order History</h2>
+        <history-item v-for="eachOrder in user.userHistory" :currentOrder="eachOrder"></history-item>
     </div>
 </template>
 
 <script>
+    import OrderHistoryItem from "./OrderHistoryItem.vue"
 	export default {
+        components:{
+            'history-item': OrderHistoryItem,
+        },
 		computed: {
 			user() {
 				return this.$store.state.user;
 			}
         },
-        methods: {
-            logUserHistory(){
-                console.log(this.user.userHistory);
-            }
-        }
 	};
 </script>
+
+<style scoped>
+    .wrapper{
+        padding: 0 10vw 0 10vw;
+    }
+</style>

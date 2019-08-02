@@ -40,7 +40,6 @@
 		methods: {
 			getImageUrl(imageName) {
 				return require("../../src/images/" + imageName);
-				console.log(require("../../src/images/" + imageName));
 			},
 			remove() {
 				let index = 0;

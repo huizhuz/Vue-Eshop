@@ -10,8 +10,12 @@
 		</div>
 		<div class="right-wrapper">
 			<h3 class="toggle">Order summary</h3>
-			<p>Account Balance: {{Math.floor(userBalance)}}</p>
+			
 			<div class="total">
+				<div class="line">
+					<p>Account Blance:</p>
+					<p>${{parseFloat(userBalance).toFixed(2)}}</p>
+				</div>
 				<div class="line">
 					<p>Subtotal:</p>
 					<p>${{subTotal}}</p>
@@ -168,6 +172,7 @@
 		.left-wrapper {
 			width: 70%;
 			border-right: 1px solid rgba(128, 128, 128, 0.575);
+			min-height: 100vh;
 		}
 		.right-wrapper {
 			margin-top: 5rem;
