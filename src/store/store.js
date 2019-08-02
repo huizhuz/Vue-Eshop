@@ -107,6 +107,8 @@ export const store = new Vuex.Store({
         loggedin: false,
 
         message: '',
+
+        showError: false,
     },
 
     mutations: {
@@ -148,6 +150,12 @@ export const store = new Vuex.Store({
         },
         changeMessage(state, msg) {
             state.message = msg;
+        },
+        showError(state) {
+            state.showError = true;
+        },
+        hideError(state) {
+            state.showError = false;
         }
     },
 
@@ -189,7 +197,9 @@ export const store = new Vuex.Store({
                         router.push("/Vue-Eshop");
                     }, 1500);
                 })
-                .catch(error => console.log(error));
+                .catch(error => {
+                    commit('showError')
+                });
         },
         signup({ commit }, authData) {
             this.errorMessage = '';
@@ -253,7 +263,7 @@ export const store = new Vuex.Store({
                         if (value.userID === state.user.userID) {
                             axios.patch('https://vue-eshop-db.firebaseio.com/user/' + key + '.json', { "userHistory": state.user.userHistory })
                         }
-                    }                   
+                    }
                 })
         },
         updateBalance({ state }) {

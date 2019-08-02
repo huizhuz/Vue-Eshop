@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="margin-bottom: 2rem;">
 		<div class="basic-info">
 			<div>Order #: {{currentOrder.orderNumber}}</div>
 			<div>{{currentOrder.orderDate}}</div>
@@ -14,10 +14,12 @@
 				</div>
 				<div class="history-info">
 					<p class="history-info-item">${{currentOrder.orderItems[i-1].price}}</p>
-					<p class="history-info-item">${{currentOrder.orderItems[i-1].quantity}}</p>
+					<p class="history-info-item">{{currentOrder.orderItems[i-1].quantity}}</p>
 				</div>
 			</div>
 		</div>
+        <div class="grey-line"></div>
+        <div class="order-footer">Total including tax: ${{currentOrder.orderTotal}}</div>
 	</div>
 </template>
 
@@ -41,19 +43,19 @@
 		margin-bottom: 0;
 	}
 	.grey-line {
-		height: 2px;
+		height: 1px;
 		background-color: rgb(204, 204, 204);
 	}
 
 	.item-wrapper {
-		height: 10rem;
+		height: 7rem;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
 	img {
-		height: 7rem;
-		width: 7rem;
+		height: 5rem;
+		width: 5rem;
 		object-fit: contain;
 	}
 
@@ -71,6 +73,10 @@
 		padding: 1rem;
 		margin: 0;
 	}
+    .order-footer{
+        display: flex;
+        flex-direction: row-reverse;
+    }
 	@media screen and (max-width: 850px) {
 		.item-info {
 			flex-direction: column;

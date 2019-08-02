@@ -19,5 +19,5 @@ export const routes = [
     {path: '/register', component: Register},
     {path: '/list/:category', component: List},
     {path: '/list/:category/detail/:merchName', component: Detail},
-    {path: '*', component: Welcome}
+    {path: '*', component: Welcome},
 ]

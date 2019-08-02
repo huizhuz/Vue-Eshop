@@ -12,6 +12,9 @@
 				<br />
 				<input type="password" name="psw" v-model="userInput.password" />
 			</form>
+			<transition name="fade" mode="out-in">
+				<div v-if="showError" class="error-box">The username or password you provided is incorrect.</div>
+			</transition>
 			<div class="buttons">
 				<v-button buttonName="submit" @click.native="onSubmit"></v-button>
 				<p>
@@ -37,14 +40,21 @@
 				}
 			};
 		},
+		created(){
+			this.$store.commit('hideError');
+		},
 		computed: {
 			loggedin() {
 				return this.$store.state.loggedin;
+			},
+			showError() {
+				return this.$store.state.showError;
 			}
 		},
 
 		methods: {
 			onSubmit() {
+				this.$store.commit("hideError");
 				this.$store.dispatch("login", this.userInput);
 			}
 		}
@@ -87,6 +97,27 @@
 		justify-content: center;
 		align-items: center;
 		margin-top: 10rem;
+	}
+	.error-box {
+		width: 300px;
+		padding: 12px 20px;
+		margin: 2rem 0 0 0;
+		display: block;
+		background-color: rgba(207, 103, 103, 0.452);
+		border: 2px solid rgba(207, 103, 103, 0.767);
+		border-radius: 2px;
+	}
+
+	.fade-enter-active,
+	.fade-leave-active {
+		transition-duration: 0.3s;
+		transition-property: opacity;
+		transition-timing-function: ease;
+	}
+
+	.fade-enter,
+	.fade-leave-active {
+		opacity: 0;
 	}
 </style>
 

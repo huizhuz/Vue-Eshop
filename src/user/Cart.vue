@@ -82,9 +82,9 @@
 			},
 			getDate() {
 				let dateObj = new Date();
-				let month = dateObj.getUTCMonth() + 1; //months from 1-12
-				let day = dateObj.getUTCDate();
-				let year = dateObj.getUTCFullYear();
+				let month = dateObj.getMonth() + 1; //months from 1-12
+				let day = dateObj.getDate();
+				let year = dateObj.getFullYear();
 
 				return month + "/" + day + "/" + year;
 			},
@@ -103,7 +103,8 @@
 								.toString(36)
 								.substring(2, 15),
 						orderDate: this.getDate(),
-						orderItems: this.user.cacheCart
+						orderItems: this.user.cacheCart,
+						orderTotal: this.total,
 					});
 
 					////测试用的
