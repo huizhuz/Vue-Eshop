@@ -214,7 +214,7 @@ export const store = new Vuex.Store({
                 )
                 .then(res => {
                     const currentUserID = res.data.localId;
-                    axios.post('https://vue-eshop-db.firebaseio.com/user.json', { userID: currentUserID, username: authData.username, userCart: null, userHistory: null })
+                    axios.post('https://vue-eshop-db.firebaseio.com/user.json', { userID: currentUserID, username: authData.username, userCart: null, userHistory: null, userBalance: 5000 })
                         .then(res => {
                             commit('showLoading');
                             setTimeout(() => {

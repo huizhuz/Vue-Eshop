@@ -64,7 +64,6 @@
 		margin-right: 5vw;
 		width: 50vw;
 		text-align: justify;
-		font-family: "Satisfy", cursive;
 	}
 	.router-link-style {
 		text-decoration: none;
